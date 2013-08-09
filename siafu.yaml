@@ -1,0 +1,78 @@
+machines:
+  p01: proxy001.example.com
+  p02: proxy002.example.com
+  p03: proxy003.example.com
+  p04: proxy004.example.com
+  p05: proxy005.example.com
+  p06: proxy006.example.com
+  p07: proxy007.example.com
+  p08: proxy008.example.com
+  p09: proxy009.example.com
+  p10: proxy010.example.com
+  p11: proxy011.example.com
+  p12: proxy012.example.com
+  c01: core01.example.com
+  c02: core02.example.com
+  m01: manager01.example.com
+  m02: manager02.example.com
+  t01: tracker01.example.com
+  t02: tracker02.example.com
+  t03: tracker03.example.com
+
+
+services:
+
+- name: proxy
+  service: tomcat6
+  machines:
+  - p01
+  - p02
+  - p03
+  - p04
+  - p05
+  - p06
+  - p07
+  - p08
+  - p09
+  - p10
+  - p11
+  - p12
+
+- name: core
+  service: tomcat6
+  machines:
+  - c01
+  - c02
+
+- name: manager 
+  service: tomcat6
+  machines:
+  - m01
+  - m02
+
+- name: tracker
+  service: tomcat6
+  machines:
+  - t01
+  - t02
+  - t03
+
+
+scenarios:
+
+- name: test_no_write
+  actions: 
+  - $m01,m02 chmod 444 -R /some/config/file
+  - wait 40
+  - $m01,m02 chmod 755 -R /some/config/file
+
+- name: restart_with_delay
+  actions:
+  - stop core
+  - wait 10
+  - start core
+
+- name: pgrep_xmx
+  actions:
+  - ^proxy pgrep -lf java | grep -o -E "Xmx.{0,6}"
+
