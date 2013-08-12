@@ -3,6 +3,8 @@
 Command-line tool that uses Fabric to manage remote hosts and services
 
 ##Run
+You need to have [Fabric](https://github.com/fabric/fabric) installed.
+
     fab -f siafu
 
 ##Summary
